@@ -1,0 +1,16 @@
+
+FlipIntent to flip
+FlipIntent flip
+FlipIntent flip again
+FlipIntent reflip
+FlipIntent start
+
+HeadsIntent heads
+
+TailsIntent tails
+
+ErrorIntent error
+
+HintIntent hint
+HintIntent give me a hint
+HintIntent can i have a hint
