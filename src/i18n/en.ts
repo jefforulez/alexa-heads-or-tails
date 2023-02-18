@@ -115,9 +115,7 @@ export const translation = {
     : "Say FLIP to begin."
     ,
   'HELP_CARD_TEXT'
-    : "The game is easy. I flip a coin and you guess if it came up heads or tails."
-    + " If you guess right, you get a point and we keep going."
-    + " If you guess wrong, the game is over."
+    : "The game is easy. I flip a coin and you guess if it came up HEADS or TAILS."
     ,
 
   'EXIT_SPEAK'

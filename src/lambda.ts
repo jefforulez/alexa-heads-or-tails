@@ -149,6 +149,8 @@ const AnswerIntentHandler: RequestHandler = {
   },
   handle( handlerInput: HandlerInput ) : Response
   {
+    try
+    {
     const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
     const requestAttributes = handlerInput.attributesManager.getRequestAttributes()
     logger.info( 'AnswerIntentHandler', { sessionAttributes, requestAttributes } )
@@ -226,10 +228,12 @@ const AnswerIntentHandler: RequestHandler = {
 
     // alternate speak text
     if ( ( sessionAttributes.currentScore > 0 ) && ( sessionAttributes.currentScore % 2 == 0 ) ) {
-      speakText = requestAttributes.t( 'ANSWER_CORRECT_CALL_EVEN', sessionAttributes.currentScore )
+      speakText = requestAttributes.t( 'ANSWER_CORRECT_EVEN_SPEAK', sessionAttributes.currentScore )
+      cardText = requestAttributes.t( 'ANSWER_CORRECT_CALL_EVEN_CARD', sessionAttributes.currentScore )
     }
     else {
-      speakText = requestAttributes.t( 'ANSWER_CORRECT_CALL_ODD' )
+      speakText = requestAttributes.t( 'ANSWER_CORRECT_ODD_SPEAK' )
+      cardText = requestAttributes.t( 'ANSWER_CORRECT_CALL_ODD', sessionAttributes.currentScore )
     }
 
     repromptText = requestAttributes.t( 'ANSWER_CORRECT_REPROMPT' )
@@ -237,8 +241,15 @@ const AnswerIntentHandler: RequestHandler = {
     return handlerInput.responseBuilder
       .speak( speakText )
       .reprompt( repromptText )
-      .withSimpleCard( cardTitle, speakText )
+      .withSimpleCard( cardTitle, cardText )
       .getResponse()
+
+    }
+    catch ( error )
+    {
+      logger.error( 'AnswerIntentHandler', { error })
+      throw error
+    }
   }
 }
 
