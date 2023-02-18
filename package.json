@@ -8,10 +8,11 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dist": "rm -rf ./dist/* && npm-run-all dist:check dist:bundle",
+    "dist": "rm -rf ./dist/* && npm-run-all dist:check dist:bundle dist:compress",
     "dist:deps": "yarn install --frozen-lockfile --non-interactive --production=true --modules-folder ./dist/node_modules",
     "dist:check": "tsc --noEmit",
     "dist:bundle": "node ./build.js",
+    "dist:compress": "cd dist && zip -r ../dist.zip .",
     "watch": "npm-run-all --parallel watch:build",
     "watch:build": "tsc --watch --noEmit",
     "debug": "npm-run-all --parallel debug:build",

@@ -5,7 +5,8 @@ target/
 config/
 temp/
 
-**/yarn-error.log
-
 **/node_modules
 **/built
+
+**/*.log
+**/*.zip
