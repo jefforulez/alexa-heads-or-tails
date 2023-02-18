@@ -10,31 +10,15 @@ on:
 
 jobs:
 
-  deploy_source:
-    name: deploy lambda from source
+  deploy_lambda:
+    name: deploy lambda
     runs-on: ubuntu-latest
     steps:
-      - name: checkout repository
-        uses: actions/checkout@v2
+      - name: checkout code
+        uses: actions/checkout@v3
 
-      - name: default deploy
-        uses: appleboy/lambda-action@master
-        with:
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_region: ${{ secrets.AWS_REGION }}
-          function_name: lambda-cd
-          source: function.py
-
-
-  build-and-push-image:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: setup node.js
+        uses: actions/setup-node@v3
         with:
           node-version: 18
 
