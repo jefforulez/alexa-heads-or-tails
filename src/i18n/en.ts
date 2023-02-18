@@ -9,10 +9,10 @@ export const translation = {
     + " Say FLIP to start, or HELP for how to play."
     ,
   'LAUNCH_REPROMPT'
-    : "Say Flip to begin."
+    : "Say FLIP to begin."
     ,
   'LAUNCH_CARD_TEXT'
-    : "Let's play! Say Flip, to start."
+    : "Let's play! Say FLIP, to start."
     ,
 
   'FLIP_SPEAK'
@@ -23,7 +23,7 @@ export const translation = {
     : "What's your call? Heads? or Tails."
     ,
   'FLIP_CARD_TEXT'
-    : "What's your call? Heads? or Tails?"
+    : "What's your call? HEADS? or TAILS?"
     ,
 
   'ANSWER_INCORRECT_CALL'
@@ -37,21 +37,31 @@ export const translation = {
     ,
   'ANSWER_INCORRECT_HIGH_SCORE'
     : "Sorry, the coin came up %s."
-    + " You got % in a row, and that's a high score this round."
+    + " You got %s in a row, and that's a high score this round."
     + " Want to play again?"
     ,
   'ANSWER_INCORRECT_REPROMPT'
     : "Want to play again?"
     ,
 
-  'ANSWER_CORRECT_CALL_EVEN'
+  'ANSWER_CORRECT_EVEN_SPEAK'
     : "Correct! That's %s in a row."
     + " Here we go: What's your call? Heads? or Tails."
     ,
-  'ANSWER_CORRECT_CALL_ODD'
+  'ANSWER_CORRECT_EVEN_CARD_TEXT'
+    : "Correct! That's %s in a row."
+    + " Here we go: What's your call? HEADS? or TAILS?"
+    ,
+
+  'ANSWER_CORRECT_ODD_SPEAK'
     : "Correct!"
     + " Here we go: What's your call? Heads? or Tails."
     ,
+  'ANSWER_CORRECT_ODD_CARD_TEXT'
+    : "Correct!"
+    + " Here we go: What's your call? HEADS? or TAILS?"
+    ,
+
   'ANSWER_CORRECT_REPROMPT'
     : "What's your call? Heads? or Tails."
     ,
@@ -72,7 +82,7 @@ export const translation = {
     : "What's your call? Heads? or Tails."
     ,
   'UNHANDLED_PLAYING_CARD_TEXT'
-    : "What's your call? Heads? or Tails?"
+    : "What's your call? HEADS? or TAILS?"
     ,
 
   'UNHANDLED_OTHER_SPEAK'
@@ -90,7 +100,7 @@ export const translation = {
     : "Yikes. I'm Sorry. I think I lost my coin."
     ,
   'ERROR_REPROMPT'
-    : "Say Flip to begin."
+    : "Say FLIP to begin."
     ,
   'ERROR_CARD_TEXT'
     : "Yikes. I'm Sorry. I think I lost my coin."
@@ -102,7 +112,7 @@ export const translation = {
     + " If you guess wrong, the game is over."
     ,
   'HELP_REPROMPT'
-    : "Say Flip to begin."
+    : "Say FLIP to begin."
     ,
   'HELP_CARD_TEXT'
     : "The game is easy. I flip a coin and you guess if it came up heads or tails."

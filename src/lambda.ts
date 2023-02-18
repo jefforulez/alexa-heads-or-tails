@@ -159,7 +159,7 @@ const AnswerIntentHandler: RequestHandler = {
 
     // flip the coin
     const coin = Math.floor( Math.random() * 2 )
-    const coinName = ( !! coin ) ? 'tails' : 'heads'
+    const coinName = ( !! coin ) ? 'TAILS' : 'HEADS'
 
     let speakText = ''
     let repromptText = ''
@@ -173,20 +173,20 @@ const AnswerIntentHandler: RequestHandler = {
       if ( sessionAttributes.currentScore > 0 )
       {
         if (
-            ( sessionAttributes.currentScore >= config.minimumHighScore ) &&
-            ( sessionAttributes.currentScore >= sessionAttributes.highScore  )
+            ( sessionAttributes.currentScore >= config.minimumHighScore )
+            && ( sessionAttributes.currentScore >= sessionAttributes.highScore  )
         ) {
           speakText = requestAttributes.t(
             'ANSWER_INCORRECT_HIGH_SCORE',
             coinName,
-            sessionAttributes.currentScore
+            sessionAttributes.currentScore,
           )
         }
         else {
           speakText = requestAttributes.t(
             'ANSWER_INCORRECT_SCORE',
             coinName,
-            sessionAttributes.currentScore
+            sessionAttributes.currentScore,
           )
         }
       }
@@ -213,6 +213,8 @@ const AnswerIntentHandler: RequestHandler = {
     //
     // answer was correct
     //
+
+    let cardText
 
     // update current score
     sessionAttributes.currentScore = sessionAttributes.currentScore + 1
