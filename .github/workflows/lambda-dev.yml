@@ -1,0 +1,63 @@
+
+name: deploy to dev lambda
+
+on:
+
+  push:
+    branches:
+      - 'dev/*'
+      - 'dev-*'
+
+jobs:
+
+  deploy_source:
+    name: deploy lambda from source
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+
+      - name: default deploy
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          function_name: lambda-cd
+          source: function.py
+
+
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: run yarn install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+
+      - name: run yarn dist
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: dist
+
+      - name: deploy lambda
+        uses: appleboy/lambda-action@v0.1.5
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          function_name: alexa-heads-or-tails
+          zip_file: dist.zip
+          memory_size: 128
+          timeout: 5
+          handler: lambda.handler
+          role: ${{ secrets.AWS_LAMBDA_EXECUTION_ROLE }}
+          runtime: nodejs18.x

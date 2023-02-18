@@ -1,0 +1,133 @@
+{
+  "manifest": {
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "uri": "arn:aws:lambda:us-east-1:295875439397:function:alexa-heads-or-tails"
+        }
+      }
+    },
+    "manifestVersion": "1.0",
+    "permissions": [],
+    "privacyAndCompliance": {
+      "allowsPurchases": false,
+      "containsAds": false,
+      "isChildDirected": false,
+      "isExportCompliant": true,
+      "usesPersonalInfo": false
+    },
+    "publishingInformation": {
+      "category": "GAMES",
+      "distributionCountries": [],
+      "isAvailableWorldwide": true,
+      "locales": {
+        "en-US": {
+          "description": "The Heads or Tails game tests your ability to call it in the air.\n\nTo get started say \"Alexa, open Heads or Tails\".\n\nThe app will keep ask you to guess \"heads or tails?\" until you get it wrong.\n\nEach right answer gives you a point.  High score gets bragging rights!",
+          "examplePhrases": [
+            "Alexa, open Heads or Tails",
+            "Alexa, tell Heads or Tails to flip",
+            "Alexa, ask Heads or Tails for help"
+          ],
+          "keywords": [
+            "Games",
+            "of",
+            "Chance",
+            "Coin",
+            "Toss",
+            "Heads",
+            "Tails"
+          ],
+          "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/cc6d7a920bb2446bbea723379cf3282f/APP_ICON_LARGE?versionId=Mwse7Q4HQD4qseBqF.YaOlFcxSGGTolc&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230217T225132Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAWBV6LQ4QJ72TE65Z%2F20230217%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=49ecf6c24cd980a4b172c0c4ef69879c3a7509677765fdf8ad42ec862677db74",
+          "name": "Heads or Tails",
+          "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/e87585a640f046b08e1c5d2771f38127/APP_ICON?versionId=RdTSkUtok4oiFD9UeuQEe8nm_e9yTyrt&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230217T225132Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAWBV6LQ4QJ72TE65Z%2F20230217%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=fb78b809b58d5a15dda4b495f1552a13b601b33b8123c43583222b6b1e4fcecc",
+          "summary": "The Heads or Tails game tests your ability to call it in the air."
+        },
+        "en-CA": {
+          "description": "The Heads or Tails game tests your ability to call it in the air.\n\nTo get started say \"Alexa, open Heads or Tails\".\n\nThe app will keep ask you to guess \"heads or tails?\" until you get it wrong.\n\nEach right answer gives you a point.  High score gets bragging rights!",
+          "examplePhrases": [
+            "Alexa, open Heads or Tails",
+            "Alexa, tell Heads or Tails to flip",
+            "Alexa, ask Heads or Tails for help"
+          ],
+          "keywords": [
+            "Games",
+            "of",
+            "Chance",
+            "Coin",
+            "Toss",
+            "Heads",
+            "Tails"
+          ],
+          "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/cc6d7a920bb2446bbea723379cf3282f/APP_ICON_LARGE?versionId=Mwse7Q4HQD4qseBqF.YaOlFcxSGGTolc&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230217T225132Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAWBV6LQ4QJ72TE65Z%2F20230217%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=49ecf6c24cd980a4b172c0c4ef69879c3a7509677765fdf8ad42ec862677db74",
+          "name": "Heads or Tails",
+          "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/e87585a640f046b08e1c5d2771f38127/APP_ICON?versionId=RdTSkUtok4oiFD9UeuQEe8nm_e9yTyrt&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230217T225132Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAWBV6LQ4QJ72TE65Z%2F20230217%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=fb78b809b58d5a15dda4b495f1552a13b601b33b8123c43583222b6b1e4fcecc",
+          "summary": "The Heads or Tails game tests your ability to call it in the air."
+        },
+        "en-IN": {
+          "description": "The Heads or Tails game tests your ability to call it in the air.\n\nTo get started say \"Alexa, open Heads or Tails\".\n\nThe app will keep ask you to guess \"heads or tails?\" until you get it wrong.\n\nEach right answer gives you a point.  High score gets bragging rights!",
+          "examplePhrases": [
+            "Alexa, open Heads or Tails",
+            "Alexa, tell Heads or Tails to flip",
+            "Alexa, ask Heads or Tails for help"
+          ],
+          "keywords": [
+            "Games",
+            "of",
+            "Chance",
+            "Coin",
+            "Toss",
+            "Heads",
+            "Tails"
+          ],
+          "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/cc6d7a920bb2446bbea723379cf3282f/APP_ICON_LARGE?versionId=Mwse7Q4HQD4qseBqF.YaOlFcxSGGTolc&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230217T225132Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAWBV6LQ4QJ72TE65Z%2F20230217%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=49ecf6c24cd980a4b172c0c4ef69879c3a7509677765fdf8ad42ec862677db74",
+          "name": "Heads or Tails",
+          "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/e87585a640f046b08e1c5d2771f38127/APP_ICON?versionId=RdTSkUtok4oiFD9UeuQEe8nm_e9yTyrt&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230217T225132Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAWBV6LQ4QJ72TE65Z%2F20230217%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=fb78b809b58d5a15dda4b495f1552a13b601b33b8123c43583222b6b1e4fcecc",
+          "summary": "The Heads or Tails game tests your ability to call it in the air."
+        },
+        "en-AU": {
+          "description": "The Heads or Tails game tests your ability to call it in the air.\n\nTo get started say \"Alexa, open Heads or Tails\".\n\nThe app will keep ask you to guess \"heads or tails?\" until you get it wrong.\n\nEach right answer gives you a point.  High score gets bragging rights!",
+          "examplePhrases": [
+            "Alexa, open Heads or Tails",
+            "Alexa, tell Heads or Tails to flip",
+            "Alexa, ask Heads or Tails for help"
+          ],
+          "keywords": [
+            "Games",
+            "of",
+            "Chance",
+            "Coin",
+            "Toss",
+            "Heads",
+            "Tails"
+          ],
+          "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/cc6d7a920bb2446bbea723379cf3282f/APP_ICON_LARGE?versionId=Mwse7Q4HQD4qseBqF.YaOlFcxSGGTolc&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230217T225132Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86399&X-Amz-Credential=AKIAWBV6LQ4QJ72TE65Z%2F20230217%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=a7db7e5ac7f4e82e904510b6f991664d797a11370385b2f07e903d2d4c523d6a",
+          "name": "Heads or Tails",
+          "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/e87585a640f046b08e1c5d2771f38127/APP_ICON?versionId=RdTSkUtok4oiFD9UeuQEe8nm_e9yTyrt&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230217T225132Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAWBV6LQ4QJ72TE65Z%2F20230217%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=fb78b809b58d5a15dda4b495f1552a13b601b33b8123c43583222b6b1e4fcecc",
+          "summary": "The Heads or Tails game tests your ability to call it in the air."
+        },
+        "en-GB": {
+          "description": "The Heads or Tails game tests your ability to call it in the air.\n\nTo get started say \"Alexa, open Heads or Tails\".\n\nThe app will keep ask you to guess \"heads or tails?\" until you get it wrong.\n\nEach right answer gives you a point.  High score gets bragging rights!",
+          "examplePhrases": [
+            "Alexa, open Heads or Tails",
+            "Alexa, tell Heads or Tails to flip",
+            "Alexa, ask Heads or Tails for help"
+          ],
+          "keywords": [
+            "Games",
+            "of",
+            "Chance",
+            "Coin",
+            "Toss",
+            "Heads",
+            "Tails"
+          ],
+          "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/cc6d7a920bb2446bbea723379cf3282f/APP_ICON_LARGE?versionId=Mwse7Q4HQD4qseBqF.YaOlFcxSGGTolc&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230217T225132Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAWBV6LQ4QJ72TE65Z%2F20230217%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=49ecf6c24cd980a4b172c0c4ef69879c3a7509677765fdf8ad42ec862677db74",
+          "name": "Heads or Tails",
+          "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/e87585a640f046b08e1c5d2771f38127/APP_ICON?versionId=RdTSkUtok4oiFD9UeuQEe8nm_e9yTyrt&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230217T225132Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAWBV6LQ4QJ72TE65Z%2F20230217%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=fb78b809b58d5a15dda4b495f1552a13b601b33b8123c43583222b6b1e4fcecc",
+          "summary": "The Heads or Tails game tests your ability to call it in the air."
+        }
+      },
+      "testingInstructions": "No special instructions.  Just say \"Alexa, open Heads or Tails\" and play the game."
+    }
+  }
+}

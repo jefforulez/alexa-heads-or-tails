@@ -1,0 +1,61 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "heads or tails",
+      "intents": [
+        {
+          "name": "FlipIntent",
+          "samples": [
+            "to flip",
+            "flip",
+            "flip again",
+            "reflip",
+            "start"
+          ]
+        },
+        {
+          "name": "HeadsIntent",
+          "samples": [
+            "heads"
+          ]
+        },
+        {
+          "name": "TailsIntent",
+          "samples": [
+            "tails"
+          ]
+        },
+        {
+          "name": "HintIntent",
+          "samples": [
+            "hint",
+            "give me a hint",
+            "can i have a hint"
+          ]
+        },
+        {
+          "name": "ErrorIntent",
+          "samples": [
+            "error"
+          ]
+        },
+        {
+          "name": "AMAZON.YesIntent"
+        },
+        {
+          "name": "AMAZON.NoIntent"
+        },
+        {
+          "name": "AMAZON.StopIntent"
+        },
+        {
+          "name": "AMAZON.CancelIntent"
+        },
+        {
+          "name": "AMAZON.HelpIntent"
+        }
+      ]
+    }
+  },
+  "version": "1"
+}

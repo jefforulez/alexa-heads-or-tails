@@ -4,5 +4,8 @@ project.json
 target/
 config/
 temp/
-node_modules
-src/node_modules
+
+**/yarn-error.log
+
+**/node_modules
+**/built

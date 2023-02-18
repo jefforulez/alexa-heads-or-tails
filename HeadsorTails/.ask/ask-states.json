@@ -1,0 +1,12 @@
+{
+  "askToolkitStatesVersion": "2020-04-15",
+  "profiles": {
+    "rulez": {
+      "skillId": "amzn1.echo-sdk-ams.app.30438486-eb59-4790-a941-56a3eb318cd9",
+      "skillMetadata": {
+        "eTag": "a64a093698ff72eda4a2b8e3a7cd9567",
+        "lastDeployHash": "QR11KRJ2xOGDRFaOuvVQoe9w4uU="
+      }
+    }
+  }
+}

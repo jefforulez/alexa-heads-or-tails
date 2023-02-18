@@ -110,3 +110,13 @@ Games of Chance, Coin Toss, Heads, Tails
 ## References
 
 - [Coin flipping](https://en.wikipedia.org/wiki/Coin_flipping6)
+
+
+## Alexa Developer Docs
+
+- https://github.com/alexa/alexa-skills-kit-sdk-for-nodejs
+- https://github.com/alexa/ask-toolkit-for-vscode
+- https://developer.amazon.com/en-US/docs/alexa/smapi/ask-cli-command-reference.html
+
+
+
