@@ -227,13 +227,24 @@ const AnswerIntentHandler: RequestHandler = {
     }
 
     // alternate speak text
-    if ( ( sessionAttributes.currentScore > 0 ) && ( sessionAttributes.currentScore % 2 == 0 ) ) {
-      speakText = requestAttributes.t( 'ANSWER_CORRECT_EVEN_SPEAK', sessionAttributes.currentScore )
-      cardText = requestAttributes.t( 'ANSWER_CORRECT_CALL_EVEN_CARD', sessionAttributes.currentScore )
+    if ( ( sessionAttributes.currentScore > 0 ) && ( sessionAttributes.currentScore % 2 == 0 ) )
+    {
+      speakText = requestAttributes.t(
+        'ANSWER_CORRECT_EVEN_SPEAK',
+        sessionAttributes.currentScore
+      )
+      cardText = requestAttributes.t(
+        'ANSWER_CORRECT_CALL_EVEN_CARD_TEXT',
+        sessionAttributes.currentScore,
+      )
     }
-    else {
+    else
+    {
       speakText = requestAttributes.t( 'ANSWER_CORRECT_ODD_SPEAK' )
-      cardText = requestAttributes.t( 'ANSWER_CORRECT_CALL_ODD', sessionAttributes.currentScore )
+      cardText = requestAttributes.t(
+        'ANSWER_CORRECT_CALL_ODD_CARD_TEXT',
+        sessionAttributes.currentScore,
+      )
     }
 
     repromptText = requestAttributes.t( 'ANSWER_CORRECT_REPROMPT' )
