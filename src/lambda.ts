@@ -248,12 +248,12 @@ const AnswerCorrectIntentHandler: RequestHandler = {
     if ( ( currentScore > 0 ) && ( currentScore % 2 == 0 ) )
     {
       speakText = requestAttributes.t( 'ANSWER_CORRECT_EVEN_SPEAK', currentScore )
-      cardText = requestAttributes.t( 'ANSWER_CORRECT_CALL_EVEN_CARD_TEXT', currentScore )
+      cardText = requestAttributes.t( 'ANSWER_CORRECT_EVEN_CARD_TEXT', currentScore )
     }
     else
     {
       speakText = requestAttributes.t( 'ANSWER_CORRECT_ODD_SPEAK' )
-      cardText = requestAttributes.t( 'ANSWER_CORRECT_CALL_ODD_CARD_TEXT', currentScore )
+      cardText = requestAttributes.t( 'ANSWER_CORRECT_ODD_CARD_TEXT', currentScore )
     }
 
     // FLIP THE COIN: heads = 0, tails = 1

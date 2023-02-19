@@ -1,7 +1,8 @@
 
 export const translation = {
 
-  'CARD_TITLE' : 'Heads or Tails'
+  'CARD_TITLE'
+    : "Heads or Tails"
     ,
 
   'LAUNCH_SPEAK'
@@ -12,7 +13,8 @@ export const translation = {
     : "Say FLIP to begin."
     ,
   'LAUNCH_CARD_TEXT'
-    : "Let's play! Say FLIP, to start."
+    : "Welcome to Heads or Tails."
+    + " Let's play! Say FLIP, to start."
     ,
 
   'FLIP_SPEAK'
