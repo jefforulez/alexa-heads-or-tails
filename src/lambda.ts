@@ -63,7 +63,7 @@ const FlipIntentHandler: RequestHandler = {
   {
     const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
 
-    if ( sessionAttributes.gameState == 'LAUNCH' )
+    if ( ! sessionAttributes.gameState || sessionAttributes.gameState == 'LAUNCH' )
     {
       return getRequestType( handlerInput.requestEnvelope ) === 'IntentRequest'
         && getIntentName( handlerInput.requestEnvelope ) === 'FlipIntent'
