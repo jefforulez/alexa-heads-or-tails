@@ -28,6 +28,16 @@ export const translation = {
     : "What's your call? HEADS? or TAILS?"
     ,
 
+  'HINT_SPEAK'
+    : "Okay, here's your hint. The coin is heads, or maybe it's tails."
+    ,
+  'HINT_REPROMPT'
+    : "What's your call? Heads? or Tails."
+    ,
+  'HINT_CARD_TEXT'
+    : "Here's your hint: The coin is HEADS, or maybe it's TAILS."
+    ,
+
   'ANSWER_INCORRECT_SPEAK'
     : "Sorry, the coin came up %s."
     + " Want to play again?"

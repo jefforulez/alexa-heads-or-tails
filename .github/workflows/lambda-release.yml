@@ -1,11 +1,10 @@
 
-name: deploy to dev lambda
+name: release lambda
 
 on:
-  push:
-    branches:
-      - 'dev/*'
-      - 'dev-*'
+  release:
+    types:
+      [released]
 
 jobs:
   deploy_lambda:

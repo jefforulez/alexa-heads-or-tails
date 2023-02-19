@@ -118,5 +118,7 @@ Games of Chance, Coin Toss, Heads, Tails
 - https://github.com/alexa/ask-toolkit-for-vscode
 - https://developer.amazon.com/en-US/docs/alexa/smapi/ask-cli-command-reference.html
 
-
+```
+ask dialog --locale en-US --profile rulez
+```
 
