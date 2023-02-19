@@ -43,6 +43,7 @@ const LaunchRequestHandler: RequestHandler = {
 
     // set the game state
     sessionAttributes.gameState = 'LAUNCH'
+    sessionAttributes.currentScore = 0
     sessionAttributes.highScore = 0
 
     const speakText = requestAttributes.t( 'LAUNCH_SPEAK' )
@@ -86,6 +87,9 @@ const FlipIntentHandler: RequestHandler = {
     logger.info( 'FlipIntentHandler', { sessionAttributes, requestAttributes } )
 
     // set the game state
+    if ( ! sessionAttributes?.gameState ) {
+      sessionAttributes.currentScore = 0 // "alexa, tell heads or tails to flip"
+    }
     sessionAttributes.gameState = 'PLAYING'
 
     // FLIP THE COIN: heads = 0, tails = 1
@@ -163,33 +167,34 @@ const AnswerIncorrectIntentHandler: RequestHandler = {
     logger.info( 'AnswerIncorrectIntentHandler', { sessionAttributes, requestAttributes } )
 
     const coinName = ( !! sessionAttributes.coinState ) ? 'TAILS' : 'HEADS'
-    const currentScore = sessionAttributes.currentScore
+    const finalScore = sessionAttributes.currentScore
 
     let speakText
     let repromptText = requestAttributes.t( 'ANSWER_INCORRECT_REPROMPT' )
     let cardTitle = requestAttributes.t( 'CARD_TITLE' )
     let cardText
 
-    if ( sessionAttributes.currentScore > 0 )
+    if ( finalScore > 0 )
     {
       if (
-        ( currentScore >= config.minimumHighScore )
-        && ( currentScore >= sessionAttributes.highScore  )
+        ( finalScore >= config.minimumHighScore )
+        && ( finalScore >= sessionAttributes.highScore  )
       )
       {
-        speakText = requestAttributes.t( 'ANSWER_INCORRECT_HIGH_SCORE_SPEAK', coinName, currentScore )
-        cardText = requestAttributes.t( 'ANSWER_INCORRECT_HIGH_SCORE_CARD_TEXT', coinName, currentScore )
+        logger.info( 'new high score', { sessionAttributes, requestAttributes } )
+        speakText = requestAttributes.t( 'ANSWER_INCORRECT_HIGH_SCORE_SPEAK', coinName, finalScore )
+        cardText = requestAttributes.t( 'ANSWER_INCORRECT_HIGH_SCORE_CARD_TEXT', coinName, finalScore )
       }
       else
       {
-        speakText = requestAttributes.t( 'ANSWER_INCORRECT_SCORE_SPEAK', coinName, currentScore )
-        cardText = requestAttributes.t( 'ANSWER_INCORRECT_SCORE_CARD_TEXT', coinName, currentScore )
+        speakText = requestAttributes.t( 'ANSWER_INCORRECT_SCORE_SPEAK', coinName, finalScore )
+        cardText = requestAttributes.t( 'ANSWER_INCORRECT_SCORE_CARD_TEXT', coinName, finalScore )
       }
     }
     else
     {
-      speakText = requestAttributes.t( 'ANSWER_INCORRECT_SPEAK', coinName, currentScore )
-      cardText = requestAttributes.t( 'ANSWER_INCORRECT_CARD_TEXT', coinName, currentScore )
+      speakText = requestAttributes.t( 'ANSWER_INCORRECT_SPEAK', coinName, finalScore )
+      cardText = requestAttributes.t( 'ANSWER_INCORRECT_CARD_TEXT', coinName, finalScore )
     }
 
     sessionAttributes.gameState = 'DONE'
@@ -236,24 +241,24 @@ const AnswerCorrectIntentHandler: RequestHandler = {
     let cardText
 
     // update current score
-    const currentScore = sessionAttributes.currentScore + 1
-    sessionAttributes.currentScore = currentScore
+    const newScore = sessionAttributes.currentScore + 1
+    sessionAttributes.currentScore = newScore
 
     // update high score
-    if ( currentScore > sessionAttributes.highScore ) {
-      sessionAttributes.highScore = currentScore
+    if ( newScore > sessionAttributes.highScore ) {
+      sessionAttributes.highScore = newScore
     }
 
     // alternate speak text
-    if ( ( currentScore > 0 ) && ( currentScore % 2 == 0 ) )
+    if ( ( newScore > 0 ) && ( newScore % 2 == 0 ) )
     {
-      speakText = requestAttributes.t( 'ANSWER_CORRECT_EVEN_SPEAK', currentScore )
-      cardText = requestAttributes.t( 'ANSWER_CORRECT_EVEN_CARD_TEXT', currentScore )
+      speakText = requestAttributes.t( 'ANSWER_CORRECT_EVEN_SPEAK', newScore )
+      cardText = requestAttributes.t( 'ANSWER_CORRECT_EVEN_CARD_TEXT', newScore )
     }
     else
     {
       speakText = requestAttributes.t( 'ANSWER_CORRECT_ODD_SPEAK' )
-      cardText = requestAttributes.t( 'ANSWER_CORRECT_ODD_CARD_TEXT', currentScore )
+      cardText = requestAttributes.t( 'ANSWER_CORRECT_ODD_CARD_TEXT', newScore )
     }
 
     // FLIP THE COIN: heads = 0, tails = 1
