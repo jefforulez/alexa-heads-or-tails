@@ -198,7 +198,7 @@ const AnswerIncorrectIntentHandler: RequestHandler = {
     return handlerInput.responseBuilder
       .speak( speakText )
       .reprompt( repromptText )
-      .withSimpleCard( cardTitle, speakText )
+      .withSimpleCard( cardTitle, cardText )
       .getResponse()
   }
 }
