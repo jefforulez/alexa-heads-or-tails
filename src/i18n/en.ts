@@ -26,20 +26,34 @@ export const translation = {
     : "What's your call? HEADS? or TAILS?"
     ,
 
-  'ANSWER_INCORRECT_CALL'
+  'ANSWER_INCORRECT_SPEAK'
     : "Sorry, the coin came up %s."
     + " Want to play again?"
     ,
-  'ANSWER_INCORRECT_SCORE'
+  'ANSWER_INCORRECT_CARD_TEXT'
+    : "Sorry, the coin came up %s."
+    ,
+
+  'ANSWER_INCORRECT_SCORE_SPEAK'
     : "Sorry, the coin came up %s."
     + " You got %s in a row."
     + " Want to play again?"
     ,
-  'ANSWER_INCORRECT_HIGH_SCORE'
+  'ANSWER_INCORRECT_SCORE_CARD_TEXT'
+    : "Sorry, the coin came up %s."
+    + " You got %s in a row."
+    ,
+
+  'ANSWER_INCORRECT_HIGH_SCORE_SPEAK'
     : "Sorry, the coin came up %s."
     + " You got %s in a row, and that's a high score this round."
     + " Want to play again?"
     ,
+  'ANSWER_INCORRECT_HIGH_SCORE_CARD_TEXT'
+    : "Sorry, the coin came up %s."
+    + " You got %s in a row, and that's a high score this round."
+    ,
+
   'ANSWER_INCORRECT_REPROMPT'
     : "Want to play again?"
     ,

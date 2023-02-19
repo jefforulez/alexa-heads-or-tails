@@ -88,6 +88,9 @@ const FlipIntentHandler: RequestHandler = {
     // set the game state
     sessionAttributes.gameState = 'PLAYING'
 
+    // FLIP THE COIN: heads = 0, tails = 1
+    sessionAttributes.coinState = Math.floor( Math.random() * 2 )
+
     const speakText = requestAttributes.t( 'FLIP_SPEAK' )
     const repromptText = requestAttributes.t( 'FLIP_REPROMPT' )
     const cardTitle = requestAttributes.t( 'CARD_TITLE' )
@@ -132,135 +135,135 @@ const HintIntentHandler: RequestHandler = {
   },
 }
 
-const AnswerIntentHandler: RequestHandler = {
+const AnswerIncorrectIntentHandler: RequestHandler = {
   canHandle( handlerInput: HandlerInput )
   {
     // invalid if the game is not already started
     const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
-    if ( sessionAttributes?.gameState != 'PLAYING' ) {
+    if ( sessionAttributes.gameState != 'PLAYING' ) {
       return false
     }
 
-    return getRequestType( handlerInput.requestEnvelope ) === 'IntentRequest'
-      && (
-        getIntentName( handlerInput.requestEnvelope ) === 'HeadsIntent'
-        || getIntentName( handlerInput.requestEnvelope ) === 'TailsIntent'
-      )
-  },
-  handle( handlerInput: HandlerInput ) : Response
-  {
-    try
-    {
-    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
-    const requestAttributes = handlerInput.attributesManager.getRequestAttributes()
-    logger.info( 'AnswerIntentHandler', { sessionAttributes, requestAttributes } )
+    if ( getRequestType( handlerInput.requestEnvelope ) !== 'IntentRequest' ) {
+      return false
+    }
 
     // what the user guessed
     const intentName = getIntentName( handlerInput.requestEnvelope )
-    const call = ( intentName === 'TailsIntent' ) ? 1 : 0
 
-    // flip the coin
-    const coin = Math.floor( Math.random() * 2 )
-    const coinName = ( !! coin ) ? 'TAILS' : 'HEADS'
+    // guess in was INCORRECT: heads != 0, tails != 1
+    return ( intentName === 'HeadsIntent' ) ? ( sessionAttributes.coinState != 0 )
+         : ( intentName === 'TailsIntent' ) ? ( sessionAttributes.coinState != 1 )
+         : false
+  },
+  handle( handlerInput: HandlerInput ) : Response
+  {
+    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
+    const requestAttributes = handlerInput.attributesManager.getRequestAttributes()
+    logger.info( 'AnswerIncorrectIntentHandler', { sessionAttributes, requestAttributes } )
 
-    let speakText = ''
-    let repromptText = ''
+    const coinName = ( !! sessionAttributes.coinState ) ? 'TAILS' : 'HEADS'
+    const currentScore = sessionAttributes.currentScore
+
+    let speakText
+    let repromptText = requestAttributes.t( 'ANSWER_INCORRECT_REPROMPT' )
     let cardTitle = requestAttributes.t( 'CARD_TITLE' )
+    let cardText
 
-    //
-    // answer was incorrect
-    //
-    if ( call != coin )
+    if ( sessionAttributes.currentScore > 0 )
     {
-      if ( sessionAttributes.currentScore > 0 )
+      if (
+        ( currentScore >= config.minimumHighScore )
+        && ( currentScore >= sessionAttributes.highScore  )
+      )
       {
-        if (
-            ( sessionAttributes.currentScore >= config.minimumHighScore )
-            && ( sessionAttributes.currentScore >= sessionAttributes.highScore  )
-        ) {
-          speakText = requestAttributes.t(
-            'ANSWER_INCORRECT_HIGH_SCORE',
-            coinName,
-            sessionAttributes.currentScore,
-          )
-        }
-        else {
-          speakText = requestAttributes.t(
-            'ANSWER_INCORRECT_SCORE',
-            coinName,
-            sessionAttributes.currentScore,
-          )
-        }
+        speakText = requestAttributes.t( 'ANSWER_INCORRECT_HIGH_SCORE_SPEAK', coinName, currentScore )
+        cardText = requestAttributes.t( 'ANSWER_INCORRECT_HIGH_SCORE_CARD_TEXT', coinName, currentScore )
       }
       else
       {
-        speakText = requestAttributes.t(
-          'ANSWER_INCORRECT_CALL',
-          coinName
-        )
+        speakText = requestAttributes.t( 'ANSWER_INCORRECT_SCORE_SPEAK', coinName, currentScore )
+        cardText = requestAttributes.t( 'ANSWER_INCORRECT_SCORE_CARD_TEXT', coinName, currentScore )
       }
-
-      repromptText = requestAttributes.t( 'ANSWER_INCORRECT_REPROMPT' )
-
-      sessionAttributes.gameState = 'DONE'
-      sessionAttributes.currentScore = 0
-
-      return handlerInput.responseBuilder
-        .speak( speakText )
-        .reprompt( repromptText )
-        .withSimpleCard( cardTitle, speakText )
-        .getResponse()
+    }
+    else
+    {
+      speakText = requestAttributes.t( 'ANSWER_INCORRECT_SPEAK', coinName, currentScore )
+      cardText = requestAttributes.t( 'ANSWER_INCORRECT_CARD_TEXT', coinName, currentScore )
     }
 
-    //
-    // answer was correct
-    //
+    sessionAttributes.gameState = 'DONE'
+    sessionAttributes.currentScore = 0
 
+    return handlerInput.responseBuilder
+      .speak( speakText )
+      .reprompt( repromptText )
+      .withSimpleCard( cardTitle, speakText )
+      .getResponse()
+  }
+}
+
+const AnswerCorrectIntentHandler: RequestHandler = {
+  canHandle( handlerInput: HandlerInput )
+  {
+    // invalid if the game is not already started
+    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
+    if ( sessionAttributes.gameState != 'PLAYING' ) {
+      return false
+    }
+
+    if ( getRequestType( handlerInput.requestEnvelope ) !== 'IntentRequest' ) {
+      return false
+    }
+
+    // what the user guessed
+    const intentName = getIntentName( handlerInput.requestEnvelope )
+
+    // guess was CORRECT: heads == 0, tails == 1
+    return ( intentName === 'HeadsIntent' ) ? ( sessionAttributes.coinState == 0 )
+         : ( intentName === 'TailsIntent' ) ? ( sessionAttributes.coinState == 1 )
+         : false
+  },
+  handle( handlerInput: HandlerInput ) : Response
+  {
+    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
+    const requestAttributes = handlerInput.attributesManager.getRequestAttributes()
+    logger.info( 'AnswerCorrectIntentHandler', { sessionAttributes, requestAttributes } )
+
+    let speakText
+    let repromptText = requestAttributes.t( 'ANSWER_CORRECT_REPROMPT' )
+    let cardTitle = requestAttributes.t( 'CARD_TITLE' )
     let cardText
 
     // update current score
-    sessionAttributes.currentScore = sessionAttributes.currentScore + 1
+    const currentScore = sessionAttributes.currentScore + 1
+    sessionAttributes.currentScore = currentScore
 
     // update high score
-    if ( sessionAttributes.currentScore > sessionAttributes.highScore ) {
-      sessionAttributes.highScore = sessionAttributes.currentScore
+    if ( currentScore > sessionAttributes.highScore ) {
+      sessionAttributes.highScore = currentScore
     }
 
     // alternate speak text
-    if ( ( sessionAttributes.currentScore > 0 ) && ( sessionAttributes.currentScore % 2 == 0 ) )
+    if ( ( currentScore > 0 ) && ( currentScore % 2 == 0 ) )
     {
-      speakText = requestAttributes.t(
-        'ANSWER_CORRECT_EVEN_SPEAK',
-        sessionAttributes.currentScore
-      )
-      cardText = requestAttributes.t(
-        'ANSWER_CORRECT_CALL_EVEN_CARD_TEXT',
-        sessionAttributes.currentScore,
-      )
+      speakText = requestAttributes.t( 'ANSWER_CORRECT_EVEN_SPEAK', currentScore )
+      cardText = requestAttributes.t( 'ANSWER_CORRECT_CALL_EVEN_CARD_TEXT', currentScore )
     }
     else
     {
       speakText = requestAttributes.t( 'ANSWER_CORRECT_ODD_SPEAK' )
-      cardText = requestAttributes.t(
-        'ANSWER_CORRECT_CALL_ODD_CARD_TEXT',
-        sessionAttributes.currentScore,
-      )
+      cardText = requestAttributes.t( 'ANSWER_CORRECT_CALL_ODD_CARD_TEXT', currentScore )
     }
 
-    repromptText = requestAttributes.t( 'ANSWER_CORRECT_REPROMPT' )
+    // FLIP THE COIN: heads = 0, tails = 1
+    sessionAttributes.coinState = Math.floor( Math.random() * 2 )
 
     return handlerInput.responseBuilder
       .speak( speakText )
       .reprompt( repromptText )
       .withSimpleCard( cardTitle, cardText )
       .getResponse()
-
-    }
-    catch ( error )
-    {
-      logger.error( 'AnswerIntentHandler', { error })
-      throw error
-    }
   }
 }
 
@@ -486,7 +489,8 @@ export const handler = SkillBuilders.custom()
   .addRequestHandlers(
     LaunchRequestHandler,
     FlipIntentHandler,
-    AnswerIntentHandler,
+    AnswerIncorrectIntentHandler,
+    AnswerCorrectIntentHandler,
     ReplayNoIntent,
     HintIntentHandler,
     HelpIntentHandler,
