@@ -1,5 +1,11 @@
 
-# Alexa Skill: Heads or Tails
+# Heads or Tails: Alexa Skill Lambda
+
+![Heads or Tails](https://res.cloudinary.com/rulez-new-media/image/upload/w_256,c_fill/alexa/DALL_E_2023-02-18_19.19.15_k5uhgb.png)
+
+https://www.amazon.com/dp/B073YHQ5JX
+
+https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-nodejs/overview.html
 
 ## Usage
 

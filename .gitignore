@@ -1,12 +1,9 @@
-.DS_Store
+
 **/.DS_Store
-project.json
-target/
-config/
-temp/
 
 **/node_modules
 **/built
+**/dist
 
 **/*.log
 **/*.zip
