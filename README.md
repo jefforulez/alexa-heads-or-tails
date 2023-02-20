@@ -31,6 +31,15 @@ Configure Nodejs:
 nvm use
 ```
 
+Setup environment:
+
+```
+vim .env
+
+LOG_LEVEL="debug"
+TEST_MODE="1"
+```
+
 Install Dependencies:
 
 ```
