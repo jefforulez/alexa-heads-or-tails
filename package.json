@@ -1,0 +1,40 @@
+{
+  "name": "alexa-heads-or-tails",
+  "version": "1.0.0",
+  "description": "an amazon alexa game for guessing heads or tails",
+  "main": "lambda.js",
+  "repository": "git@github.com:jefforulez/alexa-heads-or-tails.git",
+  "author": "<jeffo@rulez.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dist": "rm -rf ./dist/* && npm-run-all dist:check dist:bundle dist:compress",
+    "dist:deps": "yarn install --frozen-lockfile --non-interactive --production=true --modules-folder ./dist/node_modules",
+    "dist:check": "tsc --noEmit",
+    "dist:bundle": "node ./build.js",
+    "dist:compress": "cd dist && zip -r ../dist.zip .",
+    "watch": "npm-run-all --parallel watch:build",
+    "watch:build": "tsc --watch --noEmit",
+    "debug": "npm-run-all --parallel debug:build",
+    "debug:build": "tsc --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "ask-sdk": "^2.12.1",
+    "ask-sdk-core": "^2.12.1",
+    "ask-sdk-model": "^1.50.0",
+    "dotenv": "^16.0.3",
+    "i18next": "^22.4.10",
+    "i18next-sprintf-postprocessor": "^0.2.2",
+    "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "@types/i18next-sprintf-postprocessor": "^0.2.0",
+    "@types/node": "^18.14.0",
+    "ask-sdk-local-debug": "^1.1.0",
+    "esbuild": "^0.17.8",
+    "tsconfig-paths": "^4.1.2",
+    "typescript": "^4.9.5",
+    "yarn-run-all": "^3.1.1"
+  }
+}

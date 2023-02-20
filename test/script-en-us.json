@@ -1,0 +1,19 @@
+{
+  "skillId": "amzn1.echo-sdk-ams.app.30438486-eb59-4790-a941-56a3eb318cd9",
+  "locale": "en-US",
+  "userInput": [
+    "open heads or tails",
+    "flip",
+    "heads",
+    "heads",
+    "hint",
+    "tails",
+    "yes",
+    "heads",
+    "heads",
+    "heads",
+    "heads",
+    "tails",
+    "no"
+  ]
+}
