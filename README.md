@@ -5,8 +5,6 @@
 
 https://www.amazon.com/dp/B073YHQ5JX
 
-https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-nodejs/overview.html
-
 ## Usage
 
 ```
@@ -76,6 +74,7 @@ ask dialog \
 - https://github.com/alexa/alexa-skills-kit-sdk-for-nodejs
 - https://github.com/alexa/ask-toolkit-for-vscode
 - https://developer.amazon.com/en-US/docs/alexa/smapi/ask-cli-command-reference.html
+- https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-nodejs/overview.html
 
 ### Other References
 
