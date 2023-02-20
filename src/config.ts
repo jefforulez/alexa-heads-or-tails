@@ -23,6 +23,12 @@ export class Config {
   //
   //
 
+  static get isTestMode() : boolean {
+    return !! process.env.TEST_MODE
+      ? true
+      : false
+  }
+
   static get minimumHighScore() : number {
     return !! parseInt( process.env.MINIMUM_HIGH_SCORE || '' )
       ? parseInt( process.env.MINIMUM_HIGH_SCORE || '' )

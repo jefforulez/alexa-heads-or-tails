@@ -6,6 +6,7 @@
             "type": "node",
             "request": "launch",
             "program": "${command:ask.debugAdapterPath}",
+            "envFile": "${workspaceFolder}/.env",
             "args": [
                 "--accessToken",
                 "${command:ask.accessToken}",

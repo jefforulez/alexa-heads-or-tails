@@ -5,6 +5,7 @@ import { logger } from './logger'
 import {
   getRequestType,
   getIntentName,
+  isNewSession,
 } from 'ask-sdk'
 
 import {
@@ -46,6 +47,9 @@ const LaunchRequestHandler: RequestHandler = {
     sessionAttributes.currentScore = 0
     sessionAttributes.highScore = 0
 
+    // save the updated session attributes
+    handlerInput.attributesManager.setRequestAttributes( sessionAttributes )
+
     const speakText = requestAttributes.t( 'LAUNCH_SPEAK' )
     const repromptText = requestAttributes.t( 'LAUNCH_REPROMPT' )
     const cardTitle = requestAttributes.t( 'CARD_TITLE' )
@@ -64,7 +68,10 @@ const FlipIntentHandler: RequestHandler = {
   {
     const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
 
-    if ( ! sessionAttributes.gameState || sessionAttributes.gameState == 'LAUNCH' )
+    if (
+      isNewSession( handlerInput.requestEnvelope ) // "alexa, tell heads or tails to flip"
+      || sessionAttributes.gameState == 'LAUNCH'
+    )
     {
       return getRequestType( handlerInput.requestEnvelope ) === 'IntentRequest'
         && getIntentName( handlerInput.requestEnvelope ) === 'FlipIntent'
@@ -86,14 +93,18 @@ const FlipIntentHandler: RequestHandler = {
     const requestAttributes = handlerInput.attributesManager.getRequestAttributes()
     logger.info( 'FlipIntentHandler', { sessionAttributes, requestAttributes } )
 
-    // set the game state
-    if ( ! sessionAttributes?.gameState ) {
-      sessionAttributes.currentScore = 0 // "alexa, tell heads or tails to flip"
+    // "alexa, tell heads or tails to flip"
+    if ( isNewSession( handlerInput.requestEnvelope ) ) {
+      sessionAttributes.currentScore = 0
+      sessionAttributes.highScore = 0
     }
     sessionAttributes.gameState = 'PLAYING'
 
     // FLIP THE COIN: heads = 0, tails = 1
     sessionAttributes.coinState = Math.floor( Math.random() * 2 )
+
+    // save the updated session attributes
+    handlerInput.attributesManager.setRequestAttributes( sessionAttributes )
 
     const speakText = requestAttributes.t( 'FLIP_SPEAK' )
     const repromptText = requestAttributes.t( 'FLIP_REPROMPT' )
@@ -155,6 +166,12 @@ const AnswerIncorrectIntentHandler: RequestHandler = {
     // what the user guessed
     const intentName = getIntentName( handlerInput.requestEnvelope )
 
+    // test mode: heads wins, tails loses
+    if ( config.isTestMode ) {
+      logger.info( 'test mode', { sessionAttributes, intentName } )
+      return ( intentName === 'TailsIntent' )
+    }
+
     // guess in was INCORRECT: heads != 0, tails != 1
     return ( intentName === 'HeadsIntent' ) ? ( sessionAttributes.coinState != 0 )
          : ( intentName === 'TailsIntent' ) ? ( sessionAttributes.coinState != 1 )
@@ -200,6 +217,9 @@ const AnswerIncorrectIntentHandler: RequestHandler = {
     sessionAttributes.gameState = 'DONE'
     sessionAttributes.currentScore = 0
 
+    // save the updated session attributes
+    handlerInput.attributesManager.setRequestAttributes( sessionAttributes )
+
     return handlerInput.responseBuilder
       .speak( speakText )
       .reprompt( repromptText )
@@ -224,6 +244,12 @@ const AnswerCorrectIntentHandler: RequestHandler = {
     // what the user guessed
     const intentName = getIntentName( handlerInput.requestEnvelope )
 
+    // test mode: heads wins, tails loses
+    if ( config.isTestMode ) {
+      logger.debug( 'test mode', { sessionAttributes, intentName } )
+      return ( intentName === 'HeadsIntent' )
+    }
+
     // guess was CORRECT: heads == 0, tails == 1
     return ( intentName === 'HeadsIntent' ) ? ( sessionAttributes.coinState == 0 )
          : ( intentName === 'TailsIntent' ) ? ( sessionAttributes.coinState == 1 )
@@ -247,6 +273,7 @@ const AnswerCorrectIntentHandler: RequestHandler = {
     // update high score
     if ( newScore > sessionAttributes.highScore ) {
       sessionAttributes.highScore = newScore
+      logger.info( 'new high score', { sessionAttributes } )
     }
 
     // alternate speak text
@@ -263,6 +290,9 @@ const AnswerCorrectIntentHandler: RequestHandler = {
 
     // FLIP THE COIN: heads = 0, tails = 1
     sessionAttributes.coinState = Math.floor( Math.random() * 2 )
+
+    // save the updated session attributes
+    handlerInput.attributesManager.setRequestAttributes( sessionAttributes )
 
     return handlerInput.responseBuilder
       .speak( speakText )
@@ -395,9 +425,6 @@ const ExitHandler: RequestHandler = {
     const requestAttributes = handlerInput.attributesManager.getRequestAttributes()
     logger.info( 'ExitHandler', { sessionAttributes, requestAttributes } )
 
-    // set the game state
-    sessionAttributes.gameState = 'EXIT'
-
     const speakText = requestAttributes.t( 'EXIT_SPEAK' )
 
     return handlerInput.responseBuilder
@@ -416,6 +443,9 @@ const SessionEndedRequestHandler: RequestHandler = {
     const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
     const requestAttributes = handlerInput.attributesManager.getRequestAttributes()
     logger.info( 'SessionEndedRequestHandler', { sessionAttributes, requestAttributes } )
+
+    // clear the session attributes
+    handlerInput.attributesManager.setRequestAttributes({})
 
     return handlerInput.responseBuilder
       .getResponse()
