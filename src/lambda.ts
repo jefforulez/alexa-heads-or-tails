@@ -13,12 +13,19 @@ import {
   HandlerInput,
   RequestHandler,
   SkillBuilders,
+  PersistenceAdapter,
 } from 'ask-sdk-core'
 
 import {
   Response,
   SessionEndedRequest,
+  RequestEnvelope,
 } from 'ask-sdk-model'
+
+import {
+  MyPersistenceAdapter
+} from './persistanceAdapter'
+
 
 const i18n = require( 'i18next' )
 const sprintf = require( 'i18next-sprintf-postprocessor' )
@@ -36,10 +43,12 @@ const LaunchRequestHandler: RequestHandler = {
   {
     return getRequestType( handlerInput.requestEnvelope ) === 'LaunchRequest'
   },
-  handle( handlerInput: HandlerInput ) : Response
+  async handle( handlerInput: HandlerInput ) : Promise<Response>
   {
-    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
-    const requestAttributes = handlerInput.attributesManager.getRequestAttributes()
+    const attributesManager = handlerInput.attributesManager
+
+    const sessionAttributes = attributesManager.getSessionAttributes()
+    const requestAttributes = attributesManager.getRequestAttributes()
     logger.info( 'LaunchRequestHandler', { sessionAttributes, requestAttributes } )
 
     // set the game state
@@ -47,8 +56,11 @@ const LaunchRequestHandler: RequestHandler = {
     sessionAttributes.currentScore = 0
     sessionAttributes.highScore = 0
 
-    // save the updated session attributes
-    handlerInput.attributesManager.setRequestAttributes( sessionAttributes )
+    // save the session attributes
+    attributesManager.setSessionAttributes( sessionAttributes )
+
+    // save the start of the session to ddb
+    await persistSessionState( handlerInput, 'STARTED' )
 
     const speakText = requestAttributes.t( 'LAUNCH_SPEAK' )
     const repromptText = requestAttributes.t( 'LAUNCH_REPROMPT' )
@@ -87,7 +99,7 @@ const FlipIntentHandler: RequestHandler = {
 
     return false
   },
-  handle( handlerInput: HandlerInput ) : Response
+  async handle( handlerInput: HandlerInput ) : Promise<Response>
   {
     const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
     const requestAttributes = handlerInput.attributesManager.getRequestAttributes()
@@ -104,7 +116,10 @@ const FlipIntentHandler: RequestHandler = {
     sessionAttributes.coinState = Math.floor( Math.random() * 2 )
 
     // save the updated session attributes
-    handlerInput.attributesManager.setRequestAttributes( sessionAttributes )
+    handlerInput.attributesManager.setSessionAttributes( sessionAttributes )
+
+    // save the start of the session to ddb
+    await persistSessionState( handlerInput, 'PLAYING' )
 
     const speakText = requestAttributes.t( 'FLIP_SPEAK' )
     const repromptText = requestAttributes.t( 'FLIP_REPROMPT' )
@@ -218,7 +233,7 @@ const AnswerIncorrectIntentHandler: RequestHandler = {
     sessionAttributes.currentScore = 0
 
     // save the updated session attributes
-    handlerInput.attributesManager.setRequestAttributes( sessionAttributes )
+    handlerInput.attributesManager.setSessionAttributes( sessionAttributes )
 
     return handlerInput.responseBuilder
       .speak( speakText )
@@ -292,7 +307,7 @@ const AnswerCorrectIntentHandler: RequestHandler = {
     sessionAttributes.coinState = Math.floor( Math.random() * 2 )
 
     // save the updated session attributes
-    handlerInput.attributesManager.setRequestAttributes( sessionAttributes )
+    handlerInput.attributesManager.setSessionAttributes( sessionAttributes )
 
     return handlerInput.responseBuilder
       .speak( speakText )
@@ -314,7 +329,7 @@ const ReplayNoIntent: RequestHandler = {
     return getRequestType( handlerInput.requestEnvelope ) === 'IntentRequest'
       && getIntentName( handlerInput.requestEnvelope ) === 'AMAZON.NoIntent'
   },
-  handle( handlerInput: HandlerInput ) : Response
+  async handle( handlerInput: HandlerInput ) : Promise<Response>
   {
     const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
     const requestAttributes = handlerInput.attributesManager.getRequestAttributes()
@@ -323,6 +338,10 @@ const ReplayNoIntent: RequestHandler = {
     const speakText = ( sessionAttributes.highScore >= config.minimumHighScore )
       ? requestAttributes.t( 'REPLAY_NO_HIGH_SCORE_SPEAK', sessionAttributes.highScore )
       : requestAttributes.t( 'REPLAY_NO_SPEAK' )
+      ;
+
+    // save the start of the session to ddb
+    await persistSessionState( handlerInput, 'DONE' )
 
     return handlerInput.responseBuilder
       .speak( speakText )
@@ -438,14 +457,19 @@ const SessionEndedRequestHandler: RequestHandler = {
   {
     return getRequestType( handlerInput.requestEnvelope ) === 'SessionEndedRequest'
   },
-  handle( handlerInput: HandlerInput )
+  async handle( handlerInput: HandlerInput ): Promise<Response>
   {
-    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
-    const requestAttributes = handlerInput.attributesManager.getRequestAttributes()
+    const attributesManager = handlerInput.attributesManager
+
+    const sessionAttributes = attributesManager.getSessionAttributes()
+    const requestAttributes = attributesManager.getRequestAttributes()
     logger.info( 'SessionEndedRequestHandler', { sessionAttributes, requestAttributes } )
 
+    // save the start of the session to ddb
+    await persistSessionState( handlerInput, 'ENDED' )
+
     // clear the session attributes
-    handlerInput.attributesManager.setRequestAttributes({})
+    attributesManager.setSessionAttributes({})
 
     return handlerInput.responseBuilder
       .getResponse()
@@ -517,6 +541,28 @@ const LocalizationInterceptor = {
 }
 
 //
+// persistance
+//
+
+async function persistSessionState( handlerInput: HandlerInput, sessionState: string ) : Promise<void>
+{
+    const requestEnvelope = handlerInput.requestEnvelope
+    const attributesManager = handlerInput.attributesManager
+
+    const sessionAttributes = attributesManager.getSessionAttributes()
+
+    attributesManager.setPersistentAttributes({
+      deviceId: requestEnvelope?.context?.System?.device?.deviceId,
+      sessionId: requestEnvelope?.session?.sessionId,
+      userId: requestEnvelope?.session?.user?.userId,
+      ...sessionAttributes,
+      sessionState,
+    })
+
+    await attributesManager.savePersistentAttributes()
+}
+
+//
 //
 //
 
@@ -536,4 +582,5 @@ export const handler = SkillBuilders.custom()
   )
   .addRequestInterceptors( LocalizationInterceptor )
   .addErrorHandlers( ErrorHandler )
+  .withPersistenceAdapter( new MyPersistenceAdapter() as PersistenceAdapter )
   .lambda()

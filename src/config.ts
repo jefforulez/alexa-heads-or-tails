@@ -35,6 +35,19 @@ export class Config {
       : 2
   }
 
+  static get ddbTableName() : string {
+    return !! process.env.DDB_TABLE_NAME
+      ? process.env.DDB_TABLE_NAME
+      : 'alexaHeadsOrTails'
+  }
+
+  static get ddbTimeToLiveDays() : number {
+    return !! parseInt( process.env.DDB_TTL_DAYS || '' )
+      ? parseInt( process.env.DDB_TTL_DAYS || '' )
+      : 90
+  }
+
+
 }
 
 export const config = Config
