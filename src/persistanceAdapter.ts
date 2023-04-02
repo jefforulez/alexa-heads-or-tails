@@ -68,10 +68,14 @@ export class MyPersistenceAdapter extends DynamoDbPersistenceAdapter implements 
       },
     }
 
-    try {
+    try
+    {
+      logger.info( 'saving persistent attributes', { putParams } )
       await this.dynamoDBDocumentClient.put( putParams ).promise()
     }
-    catch (err: any) {
+    catch (err: any)
+    {
+      logger.info( 'error saving persistent attributes', { putParams, err } )
       throw createAskSdkError(
         this.constructor.name,
         `Could not save item (${attributesId}) to table (${putParams.TableName}): ${err.message}`
