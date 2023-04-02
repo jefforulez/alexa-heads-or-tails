@@ -30,7 +30,7 @@ jobs:
         with:
           cmd: dist
 
-      - name: deploy dev lambda
+      - name: deploy lambda
         uses: appleboy/lambda-action@v0.1.5
         with:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
