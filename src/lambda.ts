@@ -551,12 +551,17 @@ async function persistSessionState( handlerInput: HandlerInput, sessionState: st
 
     const sessionAttributes = attributesManager.getSessionAttributes()
 
-    attributesManager.setPersistentAttributes({
+    const data = {
       deviceId: requestEnvelope?.context?.System?.device?.deviceId,
       sessionId: requestEnvelope?.session?.sessionId,
       userId: requestEnvelope?.session?.user?.userId,
       ...sessionAttributes,
       sessionState,
+    }
+
+    attributesManager.setPersistentAttributes({
+      ...data,
+      data: JSON.stringify( data ),
     })
 
     await attributesManager.savePersistentAttributes()
