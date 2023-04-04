@@ -558,7 +558,7 @@ async function persistSessionState( handlerInput: HandlerInput, sessionState: st
       userId: requestEnvelope?.session?.user?.userId,
       ...sessionAttributes,
       sessionState,
-      timestamp: DateTime.utc().toSeconds(),
+      timestamp: DateTime.utc().toSeconds().toString(),
     })
 
     await attributesManager.savePersistentAttributes()
