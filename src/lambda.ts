@@ -2,6 +2,8 @@
 import { config } from './config'
 import { logger } from './logger'
 
+import { DateTime } from 'luxon'
+
 import {
   getRequestType,
   getIntentName,
@@ -25,7 +27,6 @@ import {
 import {
   MyPersistenceAdapter
 } from './persistanceAdapter'
-
 
 const i18n = require( 'i18next' )
 const sprintf = require( 'i18next-sprintf-postprocessor' )
@@ -551,17 +552,13 @@ async function persistSessionState( handlerInput: HandlerInput, sessionState: st
 
     const sessionAttributes = attributesManager.getSessionAttributes()
 
-    const data = {
+    attributesManager.setPersistentAttributes({
       deviceId: requestEnvelope?.context?.System?.device?.deviceId,
       sessionId: requestEnvelope?.session?.sessionId,
       userId: requestEnvelope?.session?.user?.userId,
       ...sessionAttributes,
       sessionState,
-    }
-
-    attributesManager.setPersistentAttributes({
-      ...data,
-      data: JSON.stringify( data ),
+      timestamp: DateTime.utc().toSeconds(),
     })
 
     await attributesManager.savePersistentAttributes()
