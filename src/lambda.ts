@@ -193,7 +193,7 @@ const AnswerIncorrectIntentHandler: RequestHandler = {
          : ( intentName === 'TailsIntent' ) ? ( sessionAttributes.coinState != 1 )
          : false
   },
-  handle( handlerInput: HandlerInput ) : Response
+  async handle( handlerInput: HandlerInput ) : Promise<Response>
   {
     const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
     const requestAttributes = handlerInput.attributesManager.getRequestAttributes()
