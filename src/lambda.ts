@@ -61,7 +61,7 @@ const LaunchRequestHandler: RequestHandler = {
     attributesManager.setSessionAttributes( sessionAttributes )
 
     // save the start of the session to ddb
-    await persistSessionState( handlerInput, 'STARTED' )
+    await persistSessionState( handlerInput, 'LAUNCH' )
 
     const speakText = requestAttributes.t( 'LAUNCH_SPEAK' )
     const repromptText = requestAttributes.t( 'LAUNCH_REPROMPT' )
