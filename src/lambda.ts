@@ -2,6 +2,8 @@
 import { config } from './config'
 import { logger } from './logger'
 
+import { DateTime } from 'luxon'
+
 import {
   getRequestType,
   getIntentName,
@@ -25,7 +27,6 @@ import {
 import {
   MyPersistenceAdapter
 } from './persistanceAdapter'
-
 
 const i18n = require( 'i18next' )
 const sprintf = require( 'i18next-sprintf-postprocessor' )
@@ -60,7 +61,7 @@ const LaunchRequestHandler: RequestHandler = {
     attributesManager.setSessionAttributes( sessionAttributes )
 
     // save the start of the session to ddb
-    await persistSessionState( handlerInput, 'STARTED' )
+    await persistSessionState( handlerInput, 'LAUNCH' )
 
     const speakText = requestAttributes.t( 'LAUNCH_SPEAK' )
     const repromptText = requestAttributes.t( 'LAUNCH_REPROMPT' )
@@ -88,7 +89,7 @@ const FlipIntentHandler: RequestHandler = {
       return getRequestType( handlerInput.requestEnvelope ) === 'IntentRequest'
         && getIntentName( handlerInput.requestEnvelope ) === 'FlipIntent'
     }
-    else if ( sessionAttributes.gameState == 'DONE' )
+    else if ( sessionAttributes.gameState == 'LOST' )
     {
       return getRequestType( handlerInput.requestEnvelope ) === 'IntentRequest'
         && (
@@ -192,7 +193,7 @@ const AnswerIncorrectIntentHandler: RequestHandler = {
          : ( intentName === 'TailsIntent' ) ? ( sessionAttributes.coinState != 1 )
          : false
   },
-  handle( handlerInput: HandlerInput ) : Response
+  async handle( handlerInput: HandlerInput ) : Promise<Response>
   {
     const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
     const requestAttributes = handlerInput.attributesManager.getRequestAttributes()
@@ -229,11 +230,14 @@ const AnswerIncorrectIntentHandler: RequestHandler = {
       cardText = requestAttributes.t( 'ANSWER_INCORRECT_CARD_TEXT', coinName, finalScore )
     }
 
-    sessionAttributes.gameState = 'DONE'
+    sessionAttributes.gameState = 'LOST'
     sessionAttributes.currentScore = 0
 
     // save the updated session attributes
     handlerInput.attributesManager.setSessionAttributes( sessionAttributes )
+
+    // save the start of the session to ddb
+    await persistSessionState( handlerInput, 'LOST' )
 
     return handlerInput.responseBuilder
       .speak( speakText )
@@ -322,7 +326,7 @@ const ReplayNoIntent: RequestHandler = {
   {
     // invalid if the game is not done
     const sessionAttributes = handlerInput.attributesManager.getSessionAttributes()
-    if ( sessionAttributes?.gameState != 'DONE' ) {
+    if ( sessionAttributes?.gameState != 'LOST' ) {
       return false
     }
 
@@ -557,6 +561,7 @@ async function persistSessionState( handlerInput: HandlerInput, sessionState: st
       userId: requestEnvelope?.session?.user?.userId,
       ...sessionAttributes,
       sessionState,
+      timestamp: DateTime.utc().toUnixInteger(),
     })
 
     await attributesManager.savePersistentAttributes()
