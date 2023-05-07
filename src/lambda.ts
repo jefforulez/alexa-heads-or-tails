@@ -54,6 +54,7 @@ const LaunchRequestHandler: RequestHandler = {
 
     // set the game state
     sessionAttributes.gameState = 'LAUNCH'
+    sessionAttributes.totalFlips = 0
     sessionAttributes.currentScore = 0
     sessionAttributes.highScore = 0
 
@@ -230,6 +231,10 @@ const AnswerIncorrectIntentHandler: RequestHandler = {
       cardText = requestAttributes.t( 'ANSWER_INCORRECT_CARD_TEXT', coinName, finalScore )
     }
 
+    // total coin flips
+    const totalFlips = sessionAttributes.totalFlips + 1
+    sessionAttributes.totalFlips = totalFlips
+
     sessionAttributes.gameState = 'LOST'
     sessionAttributes.currentScore = 0
 
@@ -284,6 +289,10 @@ const AnswerCorrectIntentHandler: RequestHandler = {
     let repromptText = requestAttributes.t( 'ANSWER_CORRECT_REPROMPT' )
     let cardTitle = requestAttributes.t( 'CARD_TITLE' )
     let cardText
+
+    // total coin flips
+    const totalFlips = sessionAttributes.totalFlips + 1
+    sessionAttributes.totalFlips = totalFlips
 
     // update current score
     const newScore = sessionAttributes.currentScore + 1
