@@ -3,7 +3,11 @@
 
 ![Heads or Tails](https://res.cloudinary.com/rulez-new-media/image/upload/w_256,c_fill/alexa/DALL_E_2023-02-18_19.19.15_k5uhgb.png)
 
-https://www.amazon.com/dp/B073YHQ5JX
+## Links
+
+- [Homepage and High Scores](https://www.headsortails.cc/)
+- [Skill Page on Amazon.com](https://www.amazon.com/dp/B073YHQ5JX)
+- [Launch Skill with Quick Link](https://alexa-skills.amazon.com/apis/custom/skills/amzn1.echo-sdk-ams.app.30438486-eb59-4790-a941-56a3eb318cd9/launch)
 
 ## Usage
 
