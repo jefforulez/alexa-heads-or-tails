@@ -61,7 +61,7 @@ const LaunchRequestHandler: RequestHandler = {
     // save the session attributes
     attributesManager.setSessionAttributes( sessionAttributes )
 
-    // save the start of the session to ddb
+    // save the session to ddb
     await persistSessionState( handlerInput, 'LAUNCH' )
 
     const speakText = requestAttributes.t( 'LAUNCH_SPEAK' )
@@ -120,7 +120,7 @@ const FlipIntentHandler: RequestHandler = {
     // save the updated session attributes
     handlerInput.attributesManager.setSessionAttributes( sessionAttributes )
 
-    // save the start of the session to ddb
+    // save the session to ddb
     await persistSessionState( handlerInput, 'PLAYING' )
 
     const speakText = requestAttributes.t( 'FLIP_SPEAK' )
@@ -231,7 +231,7 @@ const AnswerIncorrectIntentHandler: RequestHandler = {
       cardText = requestAttributes.t( 'ANSWER_INCORRECT_CARD_TEXT', coinName, finalScore )
     }
 
-    // total coin flips
+    // total coin flips this round
     const totalFlips = sessionAttributes.totalFlips + 1
     sessionAttributes.totalFlips = totalFlips
 
@@ -241,8 +241,12 @@ const AnswerIncorrectIntentHandler: RequestHandler = {
     // save the updated session attributes
     handlerInput.attributesManager.setSessionAttributes( sessionAttributes )
 
-    // save the start of the session to ddb
+    // save the session to ddb
     await persistSessionState( handlerInput, 'LOST' )
+
+    // clear the total number of flips this round
+    sessionAttributes.totalFlips = 0
+    handlerInput.attributesManager.setSessionAttributes( sessionAttributes )
 
     return handlerInput.responseBuilder
       .speak( speakText )
@@ -290,7 +294,7 @@ const AnswerCorrectIntentHandler: RequestHandler = {
     let cardTitle = requestAttributes.t( 'CARD_TITLE' )
     let cardText
 
-    // total coin flips
+    // total coin flips this round
     const totalFlips = sessionAttributes.totalFlips + 1
     sessionAttributes.totalFlips = totalFlips
 
@@ -353,7 +357,7 @@ const ReplayNoIntent: RequestHandler = {
       : requestAttributes.t( 'REPLAY_NO_SPEAK' )
       ;
 
-    // save the start of the session to ddb
+    // save the session to ddb
     await persistSessionState( handlerInput, 'DONE' )
 
     return handlerInput.responseBuilder
@@ -478,7 +482,7 @@ const SessionEndedRequestHandler: RequestHandler = {
     const requestAttributes = attributesManager.getRequestAttributes()
     logger.info( 'SessionEndedRequestHandler', { sessionAttributes, requestAttributes } )
 
-    // save the start of the session to ddb
+    // save the session to ddb
     await persistSessionState( handlerInput, 'ENDED' )
 
     // clear the session attributes
